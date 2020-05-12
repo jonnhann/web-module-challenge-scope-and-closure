@@ -26,12 +26,18 @@ function processFirstItem(stringList, callback) {
 /* Task 1: `counterMaker`
  * Study the code for counter1 and counter2. Answer the questions below.
  * 
+ * 
+ * 
+ * 
  * 1. What is the difference between counter1 and counter2?
+ * In counter 1, count is stored in the scope of the fucntion counterMaker(). And because count++ is contained within counter() of counterMaker(), the result will begin at 1 and increment by 1 with each invocation.
+ * In counter two, count is set a global scope and not within the function. So everytime you invoke counter2, and since count is = 0, the result will always be 1. 
  * 
  * 2. Which of the two uses a closure? How can you tell?
+ *  counter1 uses a closure because it can be identified elsewhere that we can use later. 
  * 
  * 3. In what scenario would the counter1 code be preferable? In what scenario would counter2 be better? 
- *
+ *counter1 would be preferable in most cases. Counter2 seems to only be preferred if you always wanted the count to start at 0 and end at 1. 
 */
 
 // counter1 code
@@ -59,8 +65,11 @@ Write a function called `inning` that generates a random number of points that a
 function inning(/*Code Here*/){
 
     /*Code Here*/
+    let score = Math.floor(Math.random()*3);
+    return score;
 
 }
+
 
 /* Task 3: finalScore()
 
@@ -76,11 +85,26 @@ finalScore(inning, 9) might return:
 
 */ 
 
-function finalScore(/*code Here*/){
+function finalScore(cb, innings){
 
-  /*Code Here*/
+  let homeScore = 0
+  let awayScore = 0
 
+  for (let i = 0; i < innings-1; i++) {
+
+    homeScore= homeScore + cb()
+    awayScore= awayScore + cb()
+
+  }
+  return {
+
+    Home: homeScore,
+    Away: awayScore
+
+  }
 }
+
+console.log(finalScore(inning, 9));
 
 /* Task 4: 
 
@@ -103,8 +127,58 @@ and returns the score at each pont in the game, like so:
 
 Final Score: 6 - 10 */
 
-function scoreboard(/* CODE HERE */) {
-  /* CODE HERE */
+function scoreboard(cb, numOfInnings) {
+
+  let homeScore = 0;
+  let awayScore = 0;
+  let theScore = [];
+
+    for (let i = 1; i <= numOfInnings; i++) {
+    let inning = i;
+    if (inning === 1) {
+    
+    homeScore = homeScore + cb();
+    awayScore = awayScore + cb();
+
+    theScore.push(`${inning}st inning: ${homeScore} - ${awayScore}`);
+
+    } else if (inning === 2) {
+
+      homeScore = homeScore + cb();
+      awayScore = awayScore + cb();
+
+      theScore.push(`${inning}nd inning: ${homeScore} - ${awayScore}`);
+
+    } else if (inning === 3) {
+
+      homeScore = homeScore + cb();
+      awayScore = awayScore + cb();
+
+      theScore.push(`${inning}rd inning: ${homeScore} - ${awayScore}`);
+
+
+    } else if (inning > 3 && inning !== numOfInnings) {
+
+      homeScore = homeScore + cb();
+      awayScore = awayScore + cb();
+
+      theScore.push(`${inning}th inning: ${homeScore} - ${awayScore}`);
+
+    } else if (inning === numOfInnings) {
+
+      homeScore = homeScore + cb();
+      awayScore = awayScore + cb();
+
+      theScore.push(`${inning}th inning: ${homeScore} - ${awayScore}`);
+      theScore.push(`Final Score: ${homeScore} - ${awayScore}`);
+
+      
+
+
+    } 
+  } return theScore;
 }
+
+console.log(scoreboard(inning, 9));
 
 
